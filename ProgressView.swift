@@ -17,33 +17,18 @@ extension UIView {
     func addProgressBar(value: Double, color: UIColor, name: String?, direction: ProgressBarDirection) {
         self.layer.masksToBounds = true
         
-//        let progressLayer = CAShapeLayer()
-//        let width = self.bounds.size.width
-//        let height = self.bounds.size.height
-//        
-//        if direction == .Horizontal {
-//            progressLayer.path = UIBezierPath(rect: CGRectMake(0.0, 0.0, width * CGFloat(value), height)).CGPath
-//        } else {
-//            let barHeight = height * CGFloat(value)
-//            progressLayer.path = UIBezierPath(rect: CGRectMake(0.0, height - barHeight, width, barHeight)).CGPath
-//        }
-//        
-//        progressLayer.fillColor = color.CGColor
-        
-        //: TEST CODE
-        let progressLayer = CALayer()
+        let progressLayer = CAShapeLayer()
         let width = self.bounds.size.width
         let height = self.bounds.size.height
         
         if direction == .Horizontal {
-            progressLayer.frame = CGRectMake(0.0, 0.0, width * CGFloat(value), height)
+            progressLayer.path = UIBezierPath(rect: CGRectMake(0.0, 0.0, width * CGFloat(value), height)).CGPath
         } else {
             let barHeight = height * CGFloat(value)
-            progressLayer.frame = CGRectMake(0.0, height - barHeight, width, barHeight)
+            progressLayer.path = UIBezierPath(rect: CGRectMake(0.0, height - barHeight, width, barHeight)).CGPath
         }
-        progressLayer.backgroundColor = color.CGColor
-        //: TEST CODE END
         
+        progressLayer.fillColor = color.CGColor
         progressLayer.name = name
         
         self.layer.addSublayer(progressLayer)
@@ -54,9 +39,9 @@ extension UIView {
         self.addProgressBar(Double(achievement) / 100.0, color: UIColor(rgba: 57, 213, 121, 1), name: "achievement", direction: direction)
     }
     
-    func getProgressBar(name: String) -> CALayer? {
+    func getProgressBar(name: String) -> CAShapeLayer? {
         if let layer = self.layer.sublayerWithName(name) {
-            return layer
+            return layer as? CAShapeLayer
         }
         return nil
     }
@@ -65,21 +50,15 @@ extension UIView {
         if let achievement = self.getProgressBar("achievement"), let completed = self.getProgressBar("completed") {
             if locked {
                 if selected {
-//                    achievement.fillColor = UIColor(rgba: 190, 245, 200, 1).CGColor
-//                    completed.fillColor = UIColor(rgba: 220, 250, 255, 1).CGColor
-                    achievement.backgroundColor = UIColor(rgba: 190, 245, 200, 1).CGColor
-                    completed.backgroundColor = UIColor(rgba: 220, 250, 255, 1).CGColor
+                    achievement.fillColor = UIColor(rgba: 190, 245, 200, 1).CGColor
+                    completed.fillColor = UIColor(rgba: 220, 250, 255, 1).CGColor
                 } else {
-//                    achievement.fillColor = UIColor(rgba: 246, 250, 231, 1).CGColor
-//                    completed.fillColor = UIColor(rgba: 236, 246, 251, 1).CGColor
-                    achievement.backgroundColor = UIColor(rgba: 246, 250, 231, 1).CGColor
-                    completed.backgroundColor = UIColor(rgba: 236, 246, 251, 1).CGColor
+                    achievement.fillColor = UIColor(rgba: 246, 250, 231, 1).CGColor
+                    completed.fillColor = UIColor(rgba: 236, 246, 251, 1).CGColor
                 }
             } else {
-//                achievement.fillColor = UIColor(rgba: 57, 213, 121, 1).CGColor
-//                completed.fillColor = UIColor(rgba: 160, 230, 255, 1).CGColor
-                achievement.backgroundColor = UIColor(rgba: 57, 213, 121, 1).CGColor
-                completed.backgroundColor = UIColor(rgba: 160, 230, 255, 1).CGColor
+                achievement.fillColor = UIColor(rgba: 57, 213, 121, 1).CGColor
+                completed.fillColor = UIColor(rgba: 160, 230, 255, 1).CGColor
             }
         }
     }
@@ -91,18 +70,13 @@ extension UIView {
         }
         
         if direction == .Horizontal {
-//            bar.path = UIBezierPath(rect: CGRectMake(0.0, 0.0, self.bounds.width * progress, self.bounds.height)).CGPath
-            bar.frame = CGRectMake(0.0, 0.0, self.bounds.width * progress, self.bounds.height)
+            bar.path = UIBezierPath(rect: CGRectMake(0.0, 0.0, self.bounds.width * progress, self.bounds.height)).CGPath
         } else {
             let height = self.bounds.size.height * progress
             let y = self.bounds.height - height
             
-//            bar.path = UIBezierPath(rect: CGRectMake(0.0, y, self.bounds.width, height)).CGPath
-            bar.frame = CGRectMake(0.0, y, self.bounds.width, height)
+            bar.path = UIBezierPath(rect: CGRectMake(0.0, y, self.bounds.width, height)).CGPath
         }
-        
-        if name == "completed" { self.layer.insertSublayer(bar, atIndex: 0) }
-        else { self.layer.insertSublayer(bar, atIndex: 1) }
     }
 }
 
